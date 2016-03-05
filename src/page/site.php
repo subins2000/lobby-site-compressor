@@ -16,8 +16,9 @@
       </div>
     </div>
     <div id="right" class="left">
-      <h2>Save</h2>
-      <a class="button" id="saveConfig">Save Current Configuration</a>
+      <h2>Quick Actions</h2>
+      <button class="btn green" id="startCompress">Start Compressing</button>
+      <a class="btn" id="saveConfig">Save Current Configuration</a>
       <h2>Compression Options</h2>
       <form id="options">
         <label>
@@ -49,18 +50,19 @@
       <form id="siteDetails">
         <label>
           <span>Site Location</span>
-          <input type="text" data-binding="siteLoc" name="location" placeholder="/var/www/html/mysite/local" />
-          <p>The full absolute location of site's source code</p>
+          <input type="text" id="site_location" data-binding="siteLoc" name="location" placeholder="/var/www/html/mysite/local" />
+          <a id="choose_site_path" class="btn orange">Choose Path</a>
         </label>
         <label>
           <span>Output</span>
-          <input type="text" data-binding="siteOutput" name="output" placeholder="/var/www/html/mysite/compressed" />
-          <p>The location where the output must be written</p>
+          <input type="text" id="site_output_location" data-binding="siteOutput" name="output" placeholder="/var/www/html/mysite/compressed" />
+          <a id="choose_site_output_path" class="btn orange">Choose Path</a>
         </label>
+        <p>^ The location where the output must be written</p>
         <h2>Replacer</h2>
         <div id="replaceFields">       
           <p>You can also replace strings like <b>localsite.dev</b> to <b>mydomain.com</b></p>
-          <a class="addReplaceField button">Add New Field</a>
+          <a class="btn addReplaceField">Add New Field</a>
         </div>
         <div>
           <h2>Before Compression</h2>
@@ -76,8 +78,10 @@
             <input type="text" data-binding="afterCommand" placeholder="Type Command Here" name="afterCommand"/>
           </label>
         </div>
-        <button class="button green">Start Compressing</button>
-        <a class="button" id="saveConfig">Save Current Configuration</a>
+        <h2>Finish</h2>
+        <p>Don't forget to save !</p>
+        <button class="btn green">Start Compressing</button>
+        <a class="btn" id="saveConfig">Save Current Configuration</a>
       </form>
     </div>
    </div>

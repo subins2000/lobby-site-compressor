@@ -4,7 +4,7 @@
   <form action="<?php echo \Lobby::u();?>" method="POST">
     <center>
       <textarea name="code"></textarea></textarea><cl/>
-      <button class="button blue">Compress</button>
+      <button class="btn blue">Compress</button>
     </center>
   </form>
   <?php
