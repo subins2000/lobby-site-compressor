@@ -2,7 +2,7 @@
   "name"              : "Site Compressor",
   "short_description" : "An application to compress HTML, CSS & JS components of a web site",
   "category"          : "development",
-  "version"           : "0.2.1",
+  "version"           : "0.2.2",
   "requires"          : {
     "lobby" : [">=", "0.5"]
   },
