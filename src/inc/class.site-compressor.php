@@ -84,7 +84,7 @@ class SiteCompressor {
   /* Make an array of found files */
   $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::SELF_FIRST);
   foreach($objects as $location => $object){
-      $name = str_replace($path."/", "", $location);
+      $name = str_replace($path.DIRECTORY_SEPARATOR, "", $location);
       /* Check if the file is in the "not wanted" list */
       if(!array_search($name, $notWanted)){
           $outLoc = $output."/$name";
