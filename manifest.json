@@ -2,12 +2,17 @@
   "name"              : "Site Compressor",
   "short_description" : "An application to compress HTML, CSS & JS components of a web site",
   "category"          : "development",
-  "version"           : "0.2.2",
+  "version"           : "0.3",
   "requires"          : {
-    "lobby" : [">=", "0.5"]
+    "lobby" : ">=0.7"
   },
   "logo"              : "1",
   "author"            : "Subin Siby",
   "author_page"       : "http://subinsb.com",
-  "app_page"          : "http://subinsb.com/compress-php-website-html-css-js"
+  "app_page"          : "http://subinsb.com/compress-php-website-html-css-js",
+  "screenshots"       : [
+    "//i.imgur.com/6lUL2ZX.png",
+    "//i.imgur.com/COW14yB.png",
+    "//i.imgur.com/y5rREUI.png"
+  ]
 }

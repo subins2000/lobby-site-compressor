@@ -9,7 +9,7 @@
   </form>
   <?php
   if( isset($_POST['code']) ){
-    include APP_DIR . "/load.php";
+    include $this->dir . "/load.php";
     $code = $_POST['code'];
     $cmp = $SC->_compressor("css", $code);
     $cmp = htmlspecialchars($cmp);

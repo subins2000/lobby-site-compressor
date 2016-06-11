@@ -25,7 +25,7 @@ class Tinyfier_HTML_Tool
                 'css' => array(),
                 'js' => array(),
                 'markers' => array(
-                    '<?'
+                    '<?php'
                 ),
                 'external_services' => true,
             );

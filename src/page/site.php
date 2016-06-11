@@ -1,4 +1,4 @@
-<?php include APP_DIR . "/src/load.php";?>
+<?php include $this->dir . "/src/load.php";?>
 <div class="top">
   <div class="table">
     <div id="left" class="left">
