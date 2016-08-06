@@ -1,4 +1,5 @@
 <?php
+namespace Lobby\App\site_compressor;
 
 /**
  * Tools for HTML optimization and compression

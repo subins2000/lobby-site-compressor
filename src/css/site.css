@@ -1,0 +1,33 @@
+#workspace{
+  font-family: Ubuntu;
+  font-size: 1rem;
+}
+#workspace #wrap{
+  margin: 0;
+}
+#workspace #sidebar{
+  padding: 0;
+  position: relative;
+}
+#workspace .sidebar-link{
+  display: block;
+  padding: 1.5em 20px;
+  color: #fff;
+  font-size: 1.2rem;
+}
+#workspace .sidebar-link.active, #workspace .sidebar-link:hover{
+  background: #fff;
+  color: #000;
+}
+#workspace .sidebar-link.disabled{
+  color: #bbb;
+}
+#workspace #content{
+  background: #fff;
+  min-height: 100%;
+  padding-bottom: 20px;
+}
+#workspace #status{
+  margin-top: 20px;
+  border-top: 5px solid #CCC;
+}

@@ -1,0 +1,37 @@
+lobby.app = $.extend(lobby.app, {
+  
+  siteID: {},
+  
+  compressionRunning: false,
+  
+  compress: function(){
+    this.compressionRunning = true;
+    $("#workspace #status").html("");
+    this.ajax("compress", {
+      "siteID": this.siteID
+    }, function(){
+      lobby.app.checkStatus();
+    });
+  },
+  
+  checkStatus: function(){
+    this.ajax("compress-status", {}, function(response){
+      response = JSON.parse(response);
+      if(response.type === "overwrite"){
+        $("#workspace #status").html(response.msg);
+        setTimeout(function(){
+          lobby.app.checkStatus();
+        }, 500);
+      }else{
+        $("#workspace #status").prepend(response.msg);
+      }
+    });
+  }
+  
+});
+
+lobby.load(function(){
+  $("#workspace #compress").on("click", function(){
+    lobby.app.compress();
+  });
+});

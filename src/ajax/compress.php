@@ -1,27 +1,22 @@
 <?php
-include "../load.php";
-include "../../../../../load.php";
-?>
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Site Compressor from subinsb.com</title>
-    <style>*{font-family:Ubuntu;}.status{font-size:13px;margin:2px;}</style>
-  </head>
-  <body>
-    <?php
-    if(isset($_POST['siteDetails'])){
-      $_POST['options'] = isset($_POST['options']) ? $_POST['options']:array();
-      $starttime = microtime(true);
-      $SC->makeOptions($_POST['siteDetails'], $_POST['options']);
-      $SC->checkOptions();
-      $SC->startCompress();
-      $endtime = microtime(true);
-      $duration = round($endtime - $starttime, 4);
-      $SC->status("Site Compression Finished In $duration seconds");
-    }else{
-      $SC->ser("Not enough data");
-    }
-    ?>
-  </body>
-</html>
+$siteID = Request::postParam("siteID");
+$siteInfo = $this->getSiteInfo($siteID);
+
+if($siteInfo){
+  $this->removeData("log");
+  $Process = new Fr\Process(Fr\Process::getPHPExecutable(), array(
+    "arguments" => array(
+      0 => L_DIR . '/lobby.php',
+      1 => "app",
+      "--a" => "site-compressor",
+      "--i" => "src/ajax/compress-bg.php",
+      "--data" => "siteID=$siteID"
+    )
+  ));
+  
+  $that = $this;
+  $command = $Process->start(function() use ($that){
+    echo "started";
+  });
+  $this->log("Command executed for compression : $command");
+}

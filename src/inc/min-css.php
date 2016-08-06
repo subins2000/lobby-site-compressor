@@ -1,5 +1,5 @@
 <?php
-namespace MatthiasMullie\Minify;
+namespace Lobby\App\site_compressor\MatthiasMullie\Minify;
 use Psr\Cache\CacheItemInterface;
 
 /**

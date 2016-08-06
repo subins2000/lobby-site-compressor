@@ -1,0 +1,11 @@
+#workspace #add, #workspace #remove{
+  display: block;
+  margin: 0 0 20px;
+  background: url(<?APP_SRC?>/src/image/add.svg);
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+}
+#workspace #remove{
+  background: url(<?APP_SRC?>/src/image/remove.svg);
+}
