@@ -47,8 +47,37 @@ class site_compressor extends \Lobby\App {
   /**
    * On App update
    */
-  public function onUpdate(){
-    
+  public function onUpdate($version, $oldVersion = null){
+    if($oldVersion < 0.4.1){
+      $saves = $this->getData("", "site-compressor");
+      foreach($saves as $save){
+        $siteInfo = json_decode($save['value'], true);
+        
+        $siteInfo = array(
+          "name" => $save['name'],
+          "src" => $siteInfo["main"]["siteLoc"],
+          "out" => $siteInfo["main"]["siteOutput"],
+          "minHTML" => (int) ($siteInfo["main"]["minHtml"] !== ""),
+          "minPHP" => (int) ($siteInfo["main"]["minPHP"] !== ""),
+          "noComments" => (int) ($siteInfo["main"]["noComments"] !== ""),
+          "minCSS" => (int) ($siteInfo["main"]["minCss"] !== ""),
+          "minJS" => (int) ($siteInfo["main"]["minJs"] !== ""),
+          "minInline" => (int) ($siteInfo["main"]["minInline"] !== ""),
+          "skipMinFiles" => 1,
+        );
+        
+        $siteID = strtolower(preg_replace('/[^\da-z]/i', '', $siteInfo["name"]));
+        $this->saveJSONData("site-$siteID", $siteInfo);
+        
+        $this->saveJSONData("sites", array(
+          $siteID => $siteInfo["name"]
+        ));
+        
+        if(isset($siteInfo["replacer"]) && !empty($siteInfo["replacer"])){
+          $this->saveJSONData("$siteID-replacer", $siteInfo["replacer"]);
+        }
+      }
+    }
   }
   
   public function refreshAssets($siteInfo){
