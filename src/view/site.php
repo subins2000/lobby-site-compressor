@@ -194,6 +194,10 @@ if(Request::postParam("refreshAssets") !== null){
       ?>
         <h1>Settings</h1>
       <?php
+      }else if($page === "new"){
+      ?>
+        <h1>New Site</h1>
+      <?php
       }else{
         echo ser("Invalid request", "Check the URL");
       }
@@ -205,7 +209,6 @@ if(Request::postParam("refreshAssets") !== null){
       $editing = $siteID !== null;
       
       if(!$editing){
-        echo "<h1>New Site</h1>";
         $siteInfo = array(
           "name" => null,
           "src" => null,
