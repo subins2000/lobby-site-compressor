@@ -48,7 +48,7 @@ class site_compressor extends \Lobby\App {
    * On App update
    */
   public function onUpdate($version, $oldVersion = null){
-    if($oldVersion < 0.4.1){
+    if($oldVersion < "0.4.1"){
       $saves = $this->getData("", "site-compressor");
       foreach($saves as $save){
         $siteInfo = json_decode($save['value'], true);
