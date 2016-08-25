@@ -9,9 +9,11 @@
   </form>
   <?php
   if( isset($_POST['code']) ){
-    include $this->dir . "/src/load.php";
+    require_once $this->dir . "/src/inc/class.site-compressor.php";
+    require_once $this->dir . "/src/inc/min-css.php";
+    
     $code = $_POST['code'];
-    $cmp = $SC->_compressor("css", $code);
+    $cmp = Lobby\App\site_compressor\SiteCompressor::_compressor("css", $code);
     $cmp = htmlspecialchars($cmp);
   ?>
     <h2>Compressed Code</h2>

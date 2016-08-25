@@ -3,7 +3,7 @@
   "short_description" : "An application to compress HTML, CSS & JS components of a web site",
   "category"          : "development",
   "sub_category"      : "web",
-  "version"           : "0.4.1",
+  "version"           : "0.4.2",
   "requires"          : {
     "lobby" : ">=0.9.1"
   },
