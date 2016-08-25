@@ -105,12 +105,6 @@ class SiteCompressor {
      */
     $skipAssets = $this->app->getJSONData("{$this->siteID}-skip-assets");
     
-    /**
-     * Skip the `dot` dirs
-     */
-    $skipAssets[] = ".";
-    $skipAssets[] = "..";
-    
     $this->status("Compression inited");
     
     /**
@@ -138,11 +132,13 @@ class SiteCompressor {
     foreach($iterator as $location => $object) {
       $relativePath = str_replace($src . DIRECTORY_SEPARATOR, "", $location);
       
-      if(!in_array($relativePath, $skipAssets)){
+      if($relativePath !== "." && $relativePath !== ".."){
         $outLoc = "$output/$relativePath";
         if($object->isFile()) {
-          $type                 = $this->app::getMIMEType($location);
-          $this->files[$type][] = $relativePath;
+          if(!in_array($relativePath, $skipAssets)){
+            $type                 = $this->app::getMIMEType($location);
+            $this->files[$type][] = $relativePath;
+          }
           copy($location, $outLoc);
         } else if($object->isDir() && !file_exists($outLoc)) {
           /**
@@ -288,7 +284,7 @@ class SiteCompressor {
       preg_match("/\<html|\<body|\<div]/", $code, $matches);
       if(!empty($matches)) {
         $this->status("Compressing HTML <b>$file</b>");
-        $minified = $this->_compressor("html", $code);
+        $minified = self::_compressor("html", $code);
         $this->output($file, $minified);
       }
     }
@@ -305,7 +301,7 @@ class SiteCompressor {
     foreach($files as $file) {
       $this->status("Compressing JS <b>$file</b>");
       $code     = $this->input($file);
-      $minified = $this->_compressor("js", $code);
+      $minified = self::_compressor("js", $code);
       $this->output($file, $minified);
     }
     $this->status("Finished JavaScript Compression");
@@ -321,7 +317,7 @@ class SiteCompressor {
     foreach($files as $file) {
       $this->status("Compressing CSS <b>$file</b>");
       $code     = $this->input($file);
-      $minified = $this->_compressor("css", $code);
+      $minified = self::_compressor("css", $code);
       $this->output($file, $minified);
     }
     $this->status("Finished CSS Compression");
@@ -331,8 +327,9 @@ class SiteCompressor {
    * Compress each languages
    * @param string $language The language of source code
    * @param string $code The source code
+   * @return string Compressed code
    */
-  public function _compressor($language, $code = "") {
+  public static function _compressor($language, $code = "") {
     /**
      * Skip if file size is > 500KB
      */
