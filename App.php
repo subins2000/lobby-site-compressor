@@ -2,14 +2,14 @@
 namespace Lobby\App;
 
 class site_compressor extends \Lobby\App {
-  
+
   public function page($page){
     if($page === "/html" || $page === "/css" || $page === "/js"){
       $this->setTitle("Compress ". strtoupper(substr($page, 1)));
     }
     return "auto";
   }
-  
+
   public function routes(){
     return array(
       "/site[:sites]?/[a:siteID]?/[:page]?" => function($app, $request){
@@ -30,29 +30,29 @@ class site_compressor extends \Lobby\App {
       }
     );
   }
-  
+
   public function getSiteInfo($siteID){
-    $siteInfo = $this->getJSONData("site-$siteID");
+    $siteInfo = $this->data->getArray("site-$siteID");
     if(empty($siteInfo))
       return false;
-    
+
     $siteInfo = array_replace_recursive($siteInfo, array(
       "id" => $siteID,
       "lastCompressed" => 0,
-      "replace" => $this->getJSONData("$siteID-replacer")
+      "replace" => $this->data->getArray("$siteID-replacer")
     ));
     return $siteInfo;
   }
-  
+
   /**
    * On App update
    */
   public function onUpdate($version, $oldVersion = null){
-    if($oldVersion < "0.4.1"){
-      $saves = $this->getData("", "site-compressor");
+    if($oldVersion !== null && $oldVersion < "0.4.1"){
+      $saves = $this->data->getValue("", "site-compressor");
       foreach($saves as $save){
         $siteInfo = json_decode($save['value'], true);
-        
+
         $siteInfo = array(
           "name" => $save['name'],
           "src" => $siteInfo["main"]["siteLoc"],
@@ -65,58 +65,58 @@ class site_compressor extends \Lobby\App {
           "minInline" => (int) ($siteInfo["main"]["minInline"] !== ""),
           "skipMinFiles" => 1,
         );
-        
+
         $siteID = strtolower(preg_replace('/[^\da-z]/i', '', $siteInfo["name"]));
-        $this->saveJSONData("site-$siteID", $siteInfo);
-        
-        $this->saveJSONData("sites", array(
+        $this->data->saveArray("site-$siteID", $siteInfo);
+
+        $this->data->saveArray("sites", array(
           $siteID => $siteInfo["name"]
         ));
-        
+
         if(isset($siteInfo["replacer"]) && !empty($siteInfo["replacer"])){
-          $this->saveJSONData("$siteID-replacer", $siteInfo["replacer"]);
+          $this->data->saveArray("$siteID-replacer", $siteInfo["replacer"]);
         }
       }
     }
   }
-  
+
   public function refreshAssets($siteInfo){
     $siteID = $siteInfo["id"];
     $src = $siteInfo["src"];
-    
+
     $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($src, \FilesystemIterator::CURRENT_AS_SELF), \RecursiveIteratorIterator::SELF_FIRST);
     $files = array();
-    
+
     foreach($iterator as $location => $object) {
       $relativePath = str_replace($src . DIRECTORY_SEPARATOR, "", $location);
-      
+
       if(!$object->isDot() && $object->isFile())
         $files[self::getMIMEType($location)][] = $relativePath;
     }
     $this->removeData("$siteID-assets");
-    $this->saveJSONData("$siteID-assets", $files);
+    $this->data->saveArray("$siteID-assets", $files);
   }
-  
+
   public function findMinFiles($src){
     $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($src), \RecursiveIteratorIterator::SELF_FIRST);
     $files = array();
-    
+
     foreach($iterator as $location => $object) {
       $relativePath = str_replace($src . DIRECTORY_SEPARATOR, "", $location);
-      
+
       if(preg_match("/\.min\./", $object->getFilename()))
         $files[] = $relativePath;
     }
     return $files;
   }
-  
+
   /**
    * http://subinsb.com/php-find-file-mime-type
    */
   public static function getMIMEType($path) {
     $finfo = new \finfo;
     $mime  = $finfo->file($path, FILEINFO_MIME_TYPE);
-    
+
     /**
      * MIME Type is text/plain for .js and .css files, so we determine file from extension
      */
@@ -131,6 +131,6 @@ class site_compressor extends \Lobby\App {
     }
     return $mime;
   }
-  
+
 }
 ?>

@@ -1,21 +1,21 @@
 lobby.app = $.extend(lobby.app, {
-  
+
   siteID: {},
-  
+
   compressionRunning: false,
-  
+
   compress: function(){
     this.compressionRunning = true;
     $("#workspace #status").html("");
-    this.ajax("compress", {
+    this.ar("compress", {
       "siteID": this.siteID
     }, function(){
       lobby.app.checkStatus();
     });
   },
-  
+
   checkStatus: function(){
-    this.ajax("compress-status", {}, function(response){
+    this.ar("compress-status", {}, function(response){
       response = JSON.parse(response);
       if(response.type === "overwrite"){
         $("#workspace #status").html(response.msg);
@@ -27,7 +27,7 @@ lobby.app = $.extend(lobby.app, {
       }
     });
   }
-  
+
 });
 
 lobby.load(function(){

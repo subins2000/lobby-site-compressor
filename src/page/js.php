@@ -11,7 +11,7 @@
   if( isset($_POST['code']) ){
     require_once $this->dir . "/src/inc/class.site-compressor.php";
     require_once $this->dir . "/src/inc/jshrink.php";
-    
+
     $code = $_POST['code'];
     $cmp = Lobby\App\site_compressor\SiteCompressor::_compressor("js", $code);
     $cmp = htmlspecialchars($cmp);

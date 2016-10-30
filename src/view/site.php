@@ -10,7 +10,7 @@ if($siteID !== null){
 
 if($siteID !== null && $page === "delete" && Request::postParam("confirm-delete") === "yes"){
   $this->removeData("site-$siteID");
-  $this->saveJSONData("sites", array(
+  $this->data->saveArray("sites", array(
     $siteID => false
   ));
   $this->redirect("/sites?site-deleted=$siteID");
@@ -55,13 +55,13 @@ if(Request::postParam("refreshAssets") !== null){
       <p>Choose a site or <a href="<?php echo $this->u("/sites/new");?>" class="btn green">create one</a></p>
     <?php
       echo "<ul>";
-      foreach($this->getJSONData("sites") as $siteIDi => $siteName){
+      foreach($this->data->getArray("sites") as $siteIDi => $siteName){
         echo "<li>". $this->l("/site/$siteIDi", $siteName, "") ."</li>";
       }
       echo "</ul>";
     }else{
       $siteInfo = $this->getSiteInfo($siteID);
-      
+
       if($page === null){
       ?>
         <h2><?php echo $siteInfo["name"];?></h2>
@@ -102,8 +102,8 @@ if(Request::postParam("refreshAssets") !== null){
       }else if($page === "assets"){
         $this->addStyle("assets.css");
         $this->addScript("assets.js");
-        
-        $skipAssets = $this->getJSONData("$siteID-skip-assets");
+
+        $skipAssets = $this->data->getArray("$siteID-skip-assets");
       ?>
         <h2>Skip Assets</h2>
         <p>Find & Filter out assets of your site from compression. This is useful to skip already minified files like jQuery.min.js</p>
@@ -111,10 +111,10 @@ if(Request::postParam("refreshAssets") !== null){
           <?php
           if(Request::isPOST() && Request::postParam("skipAssets") !== null){
             $this->removeData("$siteID-skip-assets");
-            $this->saveJSONData("$siteID-skip-assets", Request::postParam("skipAssets"));
+            $this->data->saveArray("$siteID-skip-assets", Request::postParam("skipAssets"));
             echo sss("Saved Skipped Assets", "The list of assets that needs to be skipped has been saved");
           }
-          
+
           if(empty($skipAssets)){
             echo "<p>No assets are currently skipped from compression. Add one below :</p>";
             $skipAssets[] = "";
@@ -132,8 +132,8 @@ if(Request::postParam("refreshAssets") !== null){
         <?php
         echo "<h3>Assets</h3>";
         echo "<form action='". $this->u("/site/$siteID/assets") ."' method='POST'><button class='btn red' name='refreshAssets' value='1'>Refresh Assets</button></form>";
-        
-        foreach($this->getJSONData("$siteID-assets") as $type => $assets){
+
+        foreach($this->data->getArray("$siteID-assets") as $type => $assets){
           echo "<h4>$type</h4>";
           echo "<ul class='row'>";
           foreach($assets as $asset){
@@ -148,18 +148,18 @@ if(Request::postParam("refreshAssets") !== null){
         <h2>Replacer</h2>
         <p>You can replace strings in your site's source code with this tool.</p>
         <?php
-        $replacer = $this->getJSONData("$siteID-replacer");
-        
+        $replacer = $this->data->getArray("$siteID-replacer");
+
         if(!empty(Request::postParam("replacer"))){
           $replacer = array();
           $inputReplacer = Request::postParam("replacer");
-          
+
           for($i=0;$i < count($inputReplacer["from"]);$i++){
             if(!empty($inputReplacer["from"][$i]))
               $replacer[$inputReplacer["from"][$i]] = $inputReplacer["to"][$i];
           }
           $this->removeData("$siteID-replacer");
-          $this->saveJSONData("$siteID-replacer", $replacer);
+          $this->data->saveArray("$siteID-replacer", $replacer);
         }
         ?>
         <form action="<?php echo $this->u("/site/{$siteID}/replacer");?>" method="POST">
@@ -202,12 +202,12 @@ if(Request::postParam("refreshAssets") !== null){
         echo ser("Invalid request", "Check the URL");
       }
     }
-    
+
     if($page === "new" || $page === "settings"){
       $this->addScript("site-settings.js");
-      
+
       $editing = $siteID !== null;
-      
+
       if(!$editing){
         $siteInfo = array(
           "name" => null,
@@ -222,7 +222,7 @@ if(Request::postParam("refreshAssets") !== null){
           "skipMinFiles" => true
         );
       }
-      
+
       if(Request::isPOST()){
         $siteInfo = array(
           "name" => Request::postParam("siteName"),
@@ -244,18 +244,18 @@ if(Request::postParam("refreshAssets") !== null){
            */
           $siteInfo["beforeCMD"] = Request::postParam("beforeCMD");
           $siteInfo["afterCMD"] = Request::postParam("afterCMD");
-          
+
           $id = $siteID === null ? strtolower(preg_replace('/[^\da-z]/i', '', $siteInfo["name"])) : $siteID;
-          $this->saveJSONData("site-$id", $siteInfo);
-          
-          $this->saveJSONData("sites", array(
+          $this->data->saveArray("site-$id", $siteInfo);
+
+          $this->data->saveArray("sites", array(
             $id => $siteInfo["name"]
           ));
-          
+
           if($siteInfo["skipMinFiles"] === 1){
-            $this->saveJSONData("$siteID-skip-assets", $this->findMinFiles($siteInfo["src"]));
-          } 
-          
+            $this->data->saveArray("$siteID-skip-assets", $this->findMinFiles($siteInfo["src"]));
+          }
+
           echo sss("Site Saved", "Your site was saved. <a href='". $this->u("/site/$id/compress?now") ."'>Compress it now!</a>");
         }
       }else if(!$editing){
@@ -390,7 +390,7 @@ if(Request::postParam("refreshAssets") !== null){
         </label>
         <p>^ The location where the output must be written</p>
         <h2>Replacer</h2>
-        <div id="replaceFields">       
+        <div id="replaceFields">
           <p>You can also replace strings like <b>localsite.dev</b> to <b>mydomain.com</b></p>
           <a class="btn addReplaceField">Add New Field</a>
         </div>

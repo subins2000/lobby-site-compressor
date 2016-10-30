@@ -1,6 +1,6 @@
 <?php
 $response = array();
-$saves = $this->getData("", "site-compressor");
+$saves = $this->data->getValue("", "site-compressor");
 if( $saves ){
   foreach($saves as $save){
     $saveName = $save['name'];

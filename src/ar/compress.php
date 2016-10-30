@@ -9,11 +9,11 @@ if($siteInfo){
       0 => L_DIR . '/lobby.php',
       1 => "app",
       "--a" => "site-compressor",
-      "--i" => "src/ajax/compress-bg.php",
+      "--i" => "src/ar/compress-bg.php",
       "--data" => "siteID=$siteID"
     )
   ));
-  
+
   $that = $this;
   $command = $Process->start(function() use ($that){
     echo "started";

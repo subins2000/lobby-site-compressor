@@ -3,9 +3,9 @@
   "short_description" : "An application to compress HTML, CSS & JS components of a web site",
   "category"          : "development",
   "sub_category"      : "web",
-  "version"           : "0.4.2",
+  "version"           : "0.4.3",
   "requires"          : {
-    "lobby" : ">=0.9.1"
+    "lobby" : ">=0.9.3"
   },
   "logo"              : "1",
   "author"            : "Subin Siby",
