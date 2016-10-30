@@ -4,7 +4,7 @@
   "category"          : "development",
   "sub_category"      : "web",
   "version"           : "0.4.3",
-  "requires"          : {
+  "require"          : {
     "lobby" : ">=0.9.3"
   },
   "logo"              : "1",
