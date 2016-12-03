@@ -1,6 +1,5 @@
 <?php
 $this->addStyle("site.css");
-$this->addScript("site.js");
 
 if($siteID !== null){
   $siteInfo = $this->getSiteInfo($siteID);
@@ -9,7 +8,7 @@ if($siteID !== null){
 }
 
 if($siteID !== null && $page === "delete" && Request::postParam("confirm-delete") === "yes"){
-  $this->removeData("site-$siteID");
+  $this->data->remove("site-$siteID");
   $this->data->saveArray("sites", array(
     $siteID => false
   ));
@@ -22,7 +21,7 @@ if(Request::postParam("refreshAssets") !== null){
 }
 ?>
 <div id="wrap" class="row black">
-  <div id="sidebar" class="col s10 m2 l2">
+  <div id="sidebar" class="col s12 m2 l2">
     <a href="<?php echo $this->u("/sites");?>" class="sidebar-link purple">Sites</a>
     <?php
     if($siteID !== null){
@@ -41,7 +40,7 @@ if(Request::postParam("refreshAssets") !== null){
     }
     ?>
   </div>
-  <div id="content" class="col s10 m10 l10">
+  <div id="content" class="col s12 m10 l10">
     <?php
     if($siteID === null && $page === null){
     ?>
@@ -54,9 +53,9 @@ if(Request::postParam("refreshAssets") !== null){
       ?>
       <p>Choose a site or <a href="<?php echo $this->u("/sites/new");?>" class="btn green">create one</a></p>
     <?php
-      echo "<ul>";
+      echo "<ul class='collection'>";
       foreach($this->data->getArray("sites") as $siteIDi => $siteName){
-        echo "<li>". $this->l("/site/$siteIDi", $siteName, "") ."</li>";
+        echo "<li class='collection-item'>". $this->l("/site/$siteIDi", $siteName, "") ."</li>";
       }
       echo "</ul>";
     }else{
@@ -77,7 +76,6 @@ if(Request::postParam("refreshAssets") !== null){
         <a class="btn red" href="<?php echo $this->u("/site/$siteID/delete");?>">Delete Site</a>
       <?php
       }else if($page === "compress"){
-        $this->addScript("jquery.form.min.js");
         $this->addScript("site-compress.js");
       ?>
         <h2>Compress</h2>
@@ -91,7 +89,6 @@ if(Request::postParam("refreshAssets") !== null){
           <?php
           if(isset($_GET["now"])){
           ?>
-          if(confirm("Are you sure you want to compress now ?"))
             lobby.app.compress();
           <?php
           }
@@ -110,7 +107,7 @@ if(Request::postParam("refreshAssets") !== null){
         <form action="<?php echo $this->u("/site/$siteID/assets");?>" method="POST">
           <?php
           if(Request::isPOST() && Request::postParam("skipAssets") !== null){
-            $this->removeData("$siteID-skip-assets");
+            $this->data->remove("$siteID-skip-assets");
             $this->data->saveArray("$siteID-skip-assets", Request::postParam("skipAssets"));
             echo sss("Saved Skipped Assets", "The list of assets that needs to be skipped has been saved");
           }
@@ -158,7 +155,7 @@ if(Request::postParam("refreshAssets") !== null){
             if(!empty($inputReplacer["from"][$i]))
               $replacer[$inputReplacer["from"][$i]] = $inputReplacer["to"][$i];
           }
-          $this->removeData("$siteID-replacer");
+          $this->data->remove("$siteID-replacer");
           $this->data->saveArray("$siteID-replacer", $replacer);
         }
         ?>
