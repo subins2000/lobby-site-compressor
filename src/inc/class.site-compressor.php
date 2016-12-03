@@ -191,7 +191,7 @@ class SiteCompressor {
    * Show errors in HTML format
    */
   public function ser($title, $description = "") {
-    $this->app->saveData("compress-msg", ser($title, $description));
+    $this->app->data->saveValue("compress-msg", ser($title, $description));
     exit;
   }
 
@@ -199,7 +199,7 @@ class SiteCompressor {
    * Show success messages in HTML format
    */
   public function sss($title, $description = "") {
-    $this->app->saveData("compress-msg", sss($title, $description));
+    $this->app->data->saveValue("compress-msg", sss($title, $description));
   }
 
   /**

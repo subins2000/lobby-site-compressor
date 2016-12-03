@@ -1,5 +1,5 @@
 <?php
-$this->removeData("finished-compress");
+$this->data->remove("finished-compress");
 if($this->data->getValue("compress-msg")){
 ?>
   {"type": "overwrite", "msg": "<?php echo $this->data->getValue("compress-msg");?>"}

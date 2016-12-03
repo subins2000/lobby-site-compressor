@@ -21,7 +21,7 @@ lobby.app = $.extend(lobby.app, {
         $("#workspace #status").html(response.msg);
         setTimeout(function(){
           lobby.app.checkStatus();
-        }, 500);
+        }, 1000);
       }else{
         $("#workspace #status").prepend(response.msg);
       }

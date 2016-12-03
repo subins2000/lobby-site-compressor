@@ -3,7 +3,14 @@ $siteID = Request::postParam("siteID");
 $siteInfo = $this->getSiteInfo($siteID);
 
 if($siteInfo){
-  $this->removeData("log");
+  $history = $this->data->getArray("log");
+  if(!isset($history["finished"])){
+    echo "running";
+    return;
+  }
+
+  $this->data->remove("log");
+
   $Process = new Fr\Process(Fr\Process::getPHPExecutable(), array(
     "arguments" => array(
       0 => L_DIR . '/lobby.php',

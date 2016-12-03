@@ -8,8 +8,12 @@ require_once $this->dir . "/src/inc/min-css.php";
 require_once $this->dir . "/src/inc/jshrink.php";
 require_once $this->dir . "/src/inc/html-compress.php";
 
-$this->removeData("compress-msg");
-$this->removeData("log");
+$this->data->remove("compress-msg");
+$this->data->remove("log");
+
+/**
+ * $siteID is auto defined by passing key=value pair to --data parameter
+ */
 
 $SC = new Lobby\App\site_compressor\SiteCompressor($this);
 $SC->setOptions($this->getSiteInfo($siteID));

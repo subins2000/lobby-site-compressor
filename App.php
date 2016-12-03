@@ -93,7 +93,7 @@ class site_compressor extends \Lobby\App {
       if(!$object->isDot() && $object->isFile())
         $files[self::getMIMEType($location)][] = $relativePath;
     }
-    $this->removeData("$siteID-assets");
+    $this->data->remove("$siteID-assets");
     $this->data->saveArray("$siteID-assets", $files);
   }
 
